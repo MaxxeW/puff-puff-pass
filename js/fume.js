@@ -5,14 +5,7 @@ init();
 animate();
 
 function init() {
-    stats = new Stats();
-    stats.setMode(0);
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.left = '0px';
-    stats.domElement.style.top = '0px';
 
-
-    document.body.appendChild(stats.domElement);
 
     clock = new THREE.Clock();
 
@@ -98,12 +91,10 @@ function init() {
 function animate() {
 
     // note: three.js includes requestAnimationFrame shim
-    stats.begin();
     delta = clock.getDelta();
     requestAnimationFrame(animate);
     evolveSmoke();
     render();
-    stats.end();
 }
 
 function evolveSmoke() {
