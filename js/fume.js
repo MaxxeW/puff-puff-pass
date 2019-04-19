@@ -29,7 +29,7 @@ function init() {
 
 
     light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(-1, 0, 3);
+    light.position.set(-1, 0, 2);
     scene.add(light);
 
     THREE.ImageUtils.crossOrigin = ''; //Need this to pull in crossdomain images from AWS
@@ -45,8 +45,8 @@ function init() {
 
     for (p = 0; p < 150; p++) {
         var particle = new THREE.Mesh(smokeGeo, smokeMaterial);
-        particle.position.set(Math.random() * 500 - 250, Math.random() * 500 - 250, Math.random() * 1000 - 100);
-        particle.rotation.z = Math.random() * 360;
+        particle.position.set(Math.random() * 2000 - 250, Math.random() * 100 - 250, Math.random() * 1500 - 100);
+        particle.rotation.z = Math.random() * 5000;
         scene.add(particle);
         smokeParticles.push(particle);
     }
@@ -56,35 +56,6 @@ function init() {
     renderer.domElement.style.left = '0px';
     renderer.domElement.style.top = '0px';
 
-    // Object Model Loader and Manager
-    // Instantiate a loader
-    var loader = new THREE.GLTFLoader();
-    // Load a glTF resource
-    loader.load(
-        // resource URL
-        'models/glb/420.glb',
-        // called when the resource is loaded
-        function ( gltf ) {
-
-            scene.add( gltf.scene );
-
-        },
-        // called while loading is progressing
-        function ( xhr ) {
-
-            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-        },
-        // called when loading has errors
-        function ( error ) {
-
-            console.log( 'An error happened' );
-
-        }
-        
-    );
-
-    //
 
 }
 
