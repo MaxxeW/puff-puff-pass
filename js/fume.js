@@ -1,12 +1,32 @@
 var camera, scene, renderer,
     geometry, material, mesh;
 
+var fftSize = 1024,
+    AudioContext = (window.AudioContext || window.webkitAudioContext),
+
+    playing = false,
+    startedAt, pausedAt,
+
+    rotation = 0,
+    msgElement = document.querySelector('#loading .msg'),
+    listener, audio, mediaElement, analyser, uniform;
+
+window.addEventListener( 'resize', onResize, false );
+
 init();
 animate();
+mediaElement.loop = true;
+mediaElement.play();
 
 function init() {
 
-
+    listener = new THREE.AudioListener();
+	audio = new THREE.Audio( listener );
+    mediaElement = new Audio( '../audio/outaspace.mp3' );
+    
+	audio.setMediaElementSource( mediaElement );
+    analyser = new THREE.AudioAnalyser( audio, fftSize );
+    
     clock = new THREE.Clock();
 
     renderer = new THREE.WebGLRenderer();
@@ -32,27 +52,34 @@ function init() {
     light.position.set(-1, 0, 2);
     scene.add(light);
 
+
+
+    var color = new THREE.Color( 1, 0, 0 );
+
     THREE.ImageUtils.crossOrigin = ''; //Need this to pull in crossdomain images from AWS
     smokeTexture = THREE.ImageUtils.loadTexture('./img/Smoke-Element.png');
-    smokeMaterial = new THREE.MeshLambertMaterial({
-        color: 0x00dddd,
-        map: smokeTexture,
-        transparent: true
-    });
+    
     smokeGeo = new THREE.PlaneGeometry(300, 300);
     smokeParticles = [];
 
 
-    for (p = 0; p < 150; p++) {
+    for (p = 0; p < 240; p++) {
+        smokeMaterial = new THREE.MeshLambertMaterial({
+            color: 0x42B42E,
+            map: smokeTexture,
+            transparent: true
+        });
         var particle = new THREE.Mesh(smokeGeo, smokeMaterial);
-        particle.position.set(Math.random() * 2000 - 250, Math.random() * 100 - 250, Math.random() * 1500 - 100);
-        particle.rotation.z = Math.random() * 5000;
+        particle.position.set(Math.random() * 1000 - 250, Math.random() * 1000 - 250, Math.random() * 1500 - 100);
+        particle.rotation.z = Math.random() * 3000;
         scene.add(particle);
         smokeParticles.push(particle);
     }
 
-    document.body.appendChild(renderer.domElement);
     
+
+    document.body.appendChild(renderer.domElement);
+
     renderer.domElement.style.position = 'absolute';
     renderer.domElement.style.left = '0px';
     renderer.domElement.style.top = '0px';
@@ -60,11 +87,17 @@ function init() {
 
 }
 
+
+
 function animate() {
 
     // note: three.js includes requestAnimationFrame shim
     delta = clock.getDelta();
+
+
     requestAnimationFrame(animate);
+
+
     evolveSmoke();
     render();
 }
@@ -76,12 +109,26 @@ function evolveSmoke() {
     }
 }
 
+function onResize() {
+    renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
 function render() {
 
-    mesh.rotation.x += 0.005;
+    analyser.getFrequencyData();
+
+    scene.traverse(function(e) {
+        // console.log(e);
+        if ( e.type === 'Mesh' ) {
+            e.position.y = analyser.data[50] / 5;
+            // e.position.x = analyser.data[100] / 2;
+        }
+
+    })
+    mesh.rotation.x += 0.05 * analyser.data[420];
     mesh.rotation.y += 0.01;
     cubeSineDriver += .01;
-    mesh.position.z = 100 + (Math.sin(cubeSineDriver) * 500);
+    mesh.position.z = 100 + (Math.sin(cubeSineDriver) * 500 );
     renderer.render(scene, camera);
 
 }
