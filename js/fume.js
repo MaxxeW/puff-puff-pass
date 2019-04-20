@@ -21,7 +21,6 @@ function init() {
 
     listener = new THREE.AudioListener();
 	audio = new THREE.Audio( listener );
-<<<<<<< HEAD
     mediaElement = new Audio( '../audio/outaspace.mp3' );
     mediaElement.loop = true;
     
@@ -30,9 +29,6 @@ function init() {
         //Older browsers may not return a promise, according to the MDN website
         promise.catch(function(error) { console.error(error); });
     }
-=======
-    mediaElement = new Audio( '../puff-puff-pass/audio/outaspace.mp3' );
->>>>>>> 875983ae37aecc00272b2b8d2794425357832d86
     
 	audio.setMediaElementSource( mediaElement );
     analyser = new THREE.AudioAnalyser( audio, fftSize );
