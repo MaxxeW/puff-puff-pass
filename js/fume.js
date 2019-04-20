@@ -22,7 +22,7 @@ function init() {
 
     listener = new THREE.AudioListener();
 	audio = new THREE.Audio( listener );
-    mediaElement = new Audio( '../audio/outaspace.mp3' );
+    mediaElement = new Audio( '../puff-puff-pass/audio/outaspace.mp3' );
     
 	audio.setMediaElementSource( mediaElement );
     analyser = new THREE.AudioAnalyser( audio, fftSize );
