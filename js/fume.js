@@ -15,14 +15,20 @@ window.addEventListener( 'resize', onResize, false );
 
 init();
 animate();
-mediaElement.loop = true;
-mediaElement.play();
+
 
 function init() {
 
     listener = new THREE.AudioListener();
 	audio = new THREE.Audio( listener );
     mediaElement = new Audio( '../audio/outaspace.mp3' );
+    mediaElement.loop = true;
+    
+    var promise = mediaElement.play();
+    if (promise) {
+        //Older browsers may not return a promise, according to the MDN website
+        promise.catch(function(error) { console.error(error); });
+    }
     
 	audio.setMediaElementSource( mediaElement );
     analyser = new THREE.AudioAnalyser( audio, fftSize );
