@@ -22,6 +22,8 @@ function init() {
     listener = new THREE.AudioListener();
 	audio = new THREE.Audio( listener );
     mediaElement = new Audio( '../audio/outaspace.mp3' );
+    audio.setMediaElementSource( mediaElement );
+    analyser = new THREE.AudioAnalyser( audio, fftSize );
     mediaElement.loop = true;
     
     var promise = mediaElement.play();
@@ -30,10 +32,7 @@ function init() {
         promise.catch(function(error) { console.error(error); });
     }
     
-	audio.setMediaElementSource( mediaElement );
-    analyser = new THREE.AudioAnalyser( audio, fftSize );
-    mediaElement.loop = true;
-	mediaElement.play();
+
     clock = new THREE.Clock();
 
     renderer = new THREE.WebGLRenderer();
