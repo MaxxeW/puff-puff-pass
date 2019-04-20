@@ -33,7 +33,7 @@ function init() {
     scene.add(light);
 
     THREE.ImageUtils.crossOrigin = ''; //Need this to pull in crossdomain images from AWS
-    smokeTexture = THREE.ImageUtils.loadTexture('https://s3-us-west-2.amazonaws.com/s.cdpn.io/95637/Smoke-Element.png');
+    smokeTexture = THREE.ImageUtils.loadTexture('./img/Smoke-Element.png');
     smokeMaterial = new THREE.MeshLambertMaterial({
         color: 0x00dddd,
         map: smokeTexture,
@@ -52,6 +52,7 @@ function init() {
     }
 
     document.body.appendChild(renderer.domElement);
+    
     renderer.domElement.style.position = 'absolute';
     renderer.domElement.style.left = '0px';
     renderer.domElement.style.top = '0px';
