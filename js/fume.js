@@ -2,9 +2,7 @@ var camera, scene, renderer,
     geometry, material, mesh;
 
 
-
-window.onload = function() {
-    var fftSize = 1024,
+var fftSize = 1024,
     AudioContext = (window.AudioContext || window.webkitAudioContext),
 
     playing = false,
@@ -12,51 +10,62 @@ window.onload = function() {
 
     rotation = 0,
     msgElement = document.querySelector('#loading .msg'),
-    listener, audio, mediaElement, analyser, uniform;
-    init();
-    animate();
-}
+    listener, audio, mediaElement, analyser, uniform, actx;
+
 window.addEventListener('resize', onResize, false);
 let playButton = document.getElementById("playButton");
 playButton.addEventListener("click", handlePlayButton, false);
+
+window.onload = function () {
+    init();
+    animate();
+}
 
 async function playAudio() {
     try {
         await mediaElement.play();
         playButton.classList.toggle("paused");
-        
+
     } catch (err) {
         playButton.classList.toggle("paused");
-        
+
     }
 }
+
 function handlePlayButton() {
-    if (mediaElement.paused) {
-        playAudio();
-        playButton.innerText = 'Pause';
-    } else {
-        mediaElement.pause();
-        playButton.classList.toggle("paused");
-        playButton.innerText = 'Outaspace!';
-    }
+    actx.resume().then(() => {
+        if (mediaElement.paused) {
+            playAudio();
+            playButton.innerText = 'Pause';
+        } else {
+            mediaElement.pause();
+            playButton.classList.toggle("paused");
+            playButton.innerText = 'Outaspace!';
+        }
+        console.log('Playback resumed successfully');
+    })
+
 }
 
 
 
 
 function init() {
-
+    
     listener = new THREE.AudioListener();
     audio = new THREE.Audio(listener);
-    mediaElement = new Audio('/puff-puff-pass/audio/outaspace.mp3');
+    mediaElement = new Audio('../audio/outaspace.mp3');
     audio.setMediaElementSource(mediaElement);
+    actx = audio.context;
+    console.log(actx, mediaElement);
+
     analyser = new THREE.AudioAnalyser(audio, fftSize);
     mediaElement.loop = true;
 
-   
-    
 
-    
+
+
+
 
 
     clock = new THREE.Clock();
@@ -164,5 +173,3 @@ function render() {
     renderer.render(scene, camera);
 
 }
-
-playAudio();
