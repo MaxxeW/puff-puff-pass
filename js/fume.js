@@ -15,8 +15,7 @@ window.addEventListener( 'resize', onResize, false );
 
 init();
 animate();
-mediaElement.loop = true;
-mediaElement.play();
+
 
 function init() {
 
@@ -26,7 +25,8 @@ function init() {
     
 	audio.setMediaElementSource( mediaElement );
     analyser = new THREE.AudioAnalyser( audio, fftSize );
-    
+    mediaElement.loop = true;
+	mediaElement.play();
     clock = new THREE.Clock();
 
     renderer = new THREE.WebGLRenderer();
