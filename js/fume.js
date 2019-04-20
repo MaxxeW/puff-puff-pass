@@ -11,27 +11,46 @@ var fftSize = 1024,
     msgElement = document.querySelector('#loading .msg'),
     listener, audio, mediaElement, analyser, uniform;
 
-window.addEventListener( 'resize', onResize, false );
+window.addEventListener('resize', onResize, false);
+let playButton = document.getElementById("playButton");
+
+playButton.addEventListener("click", handlePlayButton, false);
+async function playAudio() {
+    try {
+        await mediaElement.play();
+        playButton.className.add = "playing";
+    } catch (err) {
+        playButton.className.remove = "playing";
+        playButton.className.add = "paused";
+    }
+}
+function handlePlayButton() {
+    if (mediaElement.paused) {
+        playAudio();
+    } else {
+        mediaElement.pause();
+        playButton.className.remove = "playing";
+    }
+}
 
 init();
+playAudio();
 animate();
 
 
 function init() {
 
     listener = new THREE.AudioListener();
-	audio = new THREE.Audio( listener );
-    mediaElement = new Audio( '/puff-puff-pass/audio/outaspace.mp3' );
-    audio.setMediaElementSource( mediaElement );
-    analyser = new THREE.AudioAnalyser( audio, fftSize );
+    audio = new THREE.Audio(listener);
+    mediaElement = new Audio('/audio/outaspace.mp3');
+    audio.setMediaElementSource(mediaElement);
+    analyser = new THREE.AudioAnalyser(audio, fftSize);
     mediaElement.loop = true;
+
     
-    var promise = mediaElement.play();
-    if (promise) {
-        //Older browsers may not return a promise, according to the MDN website
-        promise.catch(function(error) { console.error(error); });
-    }
+
     
+
 
     clock = new THREE.Clock();
 
@@ -60,29 +79,29 @@ function init() {
 
 
 
-    var color = new THREE.Color( 1, 0, 0 );
+    var color = new THREE.Color(1, 0, 0);
 
     THREE.ImageUtils.crossOrigin = ''; //Need this to pull in crossdomain images from AWS
     smokeTexture = THREE.ImageUtils.loadTexture('./img/Smoke-Element.png');
-    
+
     smokeGeo = new THREE.PlaneGeometry(300, 300);
     smokeParticles = [];
 
 
-    for (p = 0; p < 240; p++) {
+    for (p = 0; p < 100; p++) {
         smokeMaterial = new THREE.MeshLambertMaterial({
             color: 0x42B42E,
             map: smokeTexture,
             transparent: true
         });
         var particle = new THREE.Mesh(smokeGeo, smokeMaterial);
-        particle.position.set(Math.random() * 1000 - 250, Math.random() * 1000 - 250, Math.random() * 1500 - 100);
-        particle.rotation.z = Math.random() * 3000;
+        particle.position.set(Math.random() * 1000 - 250, Math.random() * 150 - 100, Math.random() * 1500 - 100);
+        particle.rotation.z = Math.random() * 2000;
         scene.add(particle);
         smokeParticles.push(particle);
     }
 
-    
+
 
     document.body.appendChild(renderer.domElement);
 
@@ -111,22 +130,22 @@ function animate() {
 function evolveSmoke() {
     var sp = smokeParticles.length;
     while (sp--) {
-        smokeParticles[sp].rotation.z += (delta * 0.2);
+        smokeParticles[sp].rotation.z += (delta * 0.5);
     }
 }
 
 function onResize() {
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function render() {
 
     analyser.getFrequencyData();
 
-    scene.traverse(function(e) {
+    scene.traverse(function (e) {
         // console.log(e);
-        if ( e.type === 'Mesh' ) {
-            e.position.y = analyser.data[50] / 5;
+        if (e.type === 'Mesh') {
+            e.position.y = analyser.data[50] / 3;
             // e.position.x = analyser.data[100] / 2;
         }
 
@@ -134,7 +153,7 @@ function render() {
     mesh.rotation.x += 0.05 * analyser.data[420];
     mesh.rotation.y += 0.01;
     cubeSineDriver += .01;
-    mesh.position.z = 100 + (Math.sin(cubeSineDriver) * 500 );
+    mesh.position.z = 100 + (Math.sin(cubeSineDriver) * 500);
     renderer.render(scene, camera);
 
 }
