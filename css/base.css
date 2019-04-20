@@ -40,6 +40,7 @@ body {
 
 a:focus {
 	outline: thin dotted;
+
 }
 
 a:active,
@@ -212,10 +213,10 @@ table {
 }
 
 body {
-	--color-text: #fff;
+	--color-text: #24211d;
 	--color-bg: #0e0e0f;
-	--color-link: #826437;
-	--color-link-hover: #fff;
+	--color-link: #3c8819;
+	--color-link-hover: #3c8819;
 	color: var(--color-text);
 	background-color: var(--color-bg);
 	font-family: moderno-fb, "Big Caslon", "Book Antiqua", "Palatino Linotype", Georgia, serif;
@@ -467,98 +468,13 @@ a:focus {
 }
 
 
-button {
-	appearance: none;
-	outline: none;
-	position: relative;
-	padding: 0;
-	font-size: 100%;
-	background-color: transparent;
-	border: none;
-	cursor: pointer;
-}
-
-.button {
-	width: 3em;
-	height: 3em;
-	background-color: transparent;
-	background-image: linear-gradient(#ddd, #f6f6f6);
-	border: none;
-	border-radius: 50%;
-}
-
-.button::before {
-	content: '';
-	position: absolute;
-	z-index: 1;
-	top: 50%;
-	left: 50%;
-	width: 80%;
-	height: 80%;
-	transform: translate(-50%, -50%);
-	background-color: #f4f4f4;
-	border: 0.125em solid #d5d5d5;
-	border-radius: 50%;
-	box-shadow: inset 0 0.25em 1em -0.25em rgba(255, 255, 255, 0.75);
-}
-
-.button:hover::before {
-	background-color: #fcfcfc;
-}
-
-.play-pause {
-	width: 2em;
-	height: 2em;
-}
-
-.button .arrow {
-	position: absolute;
-	z-index: 10;
-	top: 50%;
-	left: 50%;
-	width: 30%;
-	height: 30%;
+.play-button {
+	font-size: 1.2em;
+	height: 30px;
+	width: 100px;
+	display: block;
+	margin: 0 auto;
+	padding: 5px;
 	overflow: hidden;
-	transform: translate(-50%, -50%);
-}
-
-.button .arrow::before,
-.button .arrow::after {
-	content: '';
-	position: absolute;
-	left: -50%;
-	width: 100%;
-	height: 100%;
-	transform: scale(1.2, 0.7) rotate(45deg);
-	background-color: #ddd;
-	box-shadow:
-		inset 0 0.125em 0.125em -0.0625em rgba(0, 0, 0, 0.15),
-		0.0625em 0.0625em 0.125em rgba(255, 255, 255, 1);
-}
-
-.button .arrow::after {
-	left: 0;
-	transform: none;
-	background-color: transparent;
-	box-shadow: inset 0.0625em 0 0.125em -0.0625em rgba(0, 0, 0, 0.1);
-}
-
-.paused .play-pause .arrow {
-	margin-left: 0.1875em;
-}
-
-.playing .play-pause .arrow::before,
-.playing .play-pause .arrow::after {
-	left: 0;
-	width: 0.4375em;
-	transform: none;
-	background-color: #ddd;
-	box-shadow:
-		inset 0.0625em 0.125em 0.125em -0.0625em rgba(0, 0, 0, 0.15),
-		0.0625em 0.0625em 0.125em rgba(255, 255, 255, 1);
-}
-
-.playing .play-pause .arrow::after {
-	left: auto;
-	right: 0;
+	position: relative;
 }

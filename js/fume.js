@@ -14,27 +14,9 @@ var fftSize = 1024,
 window.addEventListener('resize', onResize, false);
 let playButton = document.getElementById("playButton");
 
-playButton.addEventListener("click", handlePlayButton, false);
-async function playAudio() {
-    try {
-        await mediaElement.play();
-        playButton.className.add = "playing";
-    } catch (err) {
-        playButton.className.remove = "playing";
-        playButton.className.add = "paused";
-    }
-}
-function handlePlayButton() {
-    if (mediaElement.paused) {
-        playAudio();
-    } else {
-        mediaElement.pause();
-        playButton.className.remove = "playing";
-    }
-}
+
 
 init();
-playAudio();
 animate();
 
 
@@ -42,12 +24,33 @@ function init() {
 
     listener = new THREE.AudioListener();
     audio = new THREE.Audio(listener);
-    mediaElement = new Audio('/puff-puff-pass/audio/outaspace.mp3');
+    mediaElement = new Audio('../audio/outaspace.mp3');
     audio.setMediaElementSource(mediaElement);
     analyser = new THREE.AudioAnalyser(audio, fftSize);
     mediaElement.loop = true;
 
-    
+    playButton.addEventListener("click", handlePlayButton, false);
+    async function playAudio() {
+        try {
+            await mediaElement.play();
+            playButton.classList.toggle("paused");
+            
+        } catch (err) {
+            playButton.classList.toggle("paused");
+            
+        }
+    }
+    function handlePlayButton() {
+        if (mediaElement.paused) {
+            playAudio();
+            playButton.innerText = 'Pause';
+        } else {
+            mediaElement.pause();
+            playButton.classList.toggle("paused");
+            playButton.innerText = 'Outaspace!';
+        }
+    }
+    // playAudio();
 
     
 
