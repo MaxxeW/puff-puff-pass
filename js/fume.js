@@ -1,7 +1,10 @@
 var camera, scene, renderer,
     geometry, material, mesh;
 
-var fftSize = 1024,
+
+
+window.onload = function() {
+    var fftSize = 1024,
     AudioContext = (window.AudioContext || window.webkitAudioContext),
 
     playing = false,
@@ -10,14 +13,35 @@ var fftSize = 1024,
     rotation = 0,
     msgElement = document.querySelector('#loading .msg'),
     listener, audio, mediaElement, analyser, uniform;
-
+    init();
+    animate();
+}
 window.addEventListener('resize', onResize, false);
 let playButton = document.getElementById("playButton");
+playButton.addEventListener("click", handlePlayButton, false);
+
+async function playAudio() {
+    try {
+        await mediaElement.play();
+        playButton.classList.toggle("paused");
+        
+    } catch (err) {
+        playButton.classList.toggle("paused");
+        
+    }
+}
+function handlePlayButton() {
+    if (mediaElement.paused) {
+        playAudio();
+        playButton.innerText = 'Pause';
+    } else {
+        mediaElement.pause();
+        playButton.classList.toggle("paused");
+        playButton.innerText = 'Outaspace!';
+    }
+}
 
 
-
-init();
-animate();
 
 
 function init() {
@@ -29,28 +53,8 @@ function init() {
     analyser = new THREE.AudioAnalyser(audio, fftSize);
     mediaElement.loop = true;
 
-    playButton.addEventListener("click", handlePlayButton, false);
-    async function playAudio() {
-        try {
-            await mediaElement.play();
-            playButton.classList.toggle("paused");
-            
-        } catch (err) {
-            playButton.classList.toggle("paused");
-            
-        }
-    }
-    function handlePlayButton() {
-        if (mediaElement.paused) {
-            playAudio();
-            playButton.innerText = 'Pause';
-        } else {
-            mediaElement.pause();
-            playButton.classList.toggle("paused");
-            playButton.innerText = 'Outaspace!';
-        }
-    }
-    // playAudio();
+   
+    
 
     
 
@@ -160,3 +164,5 @@ function render() {
     renderer.render(scene, camera);
 
 }
+
+playAudio();
