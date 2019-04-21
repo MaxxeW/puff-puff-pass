@@ -17,7 +17,7 @@ let playButton = document.getElementById("playButton");
 playButton.addEventListener("click", handlePlayButton, false);
 
 let req = new XMLHttpRequest();
-req.open('GET', '../audio/outaspace.mp3', true);
+req.open('GET', '/puff-puff-pass/audio/outaspace.mp3', true);
 req.responseType = 'blob';
 req.onload = function() {
     // Onload is triggered even on 404
