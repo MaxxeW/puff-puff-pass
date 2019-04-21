@@ -10,7 +10,7 @@
 	<meta name="keywords" content="webgl, 3d, image, shader, javascript, tutorial, demo, web development, effect" />
 	<meta name="author" content="The Company Creative" />
 	<link rel="stylesheet" type="text/css" href="css/base.css" />
-
+	<script src="/js/lib/preloadjs.min.js"></script>
 
 	<script>
 		document.documentElement.className = "js";
@@ -20,17 +20,22 @@
 				.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e
 		};
 		supportsCssVars() || alert("Please view this demo in a modern browser that supports CSS Variables.");
+
+		document.addEventListener('DOMContentLoaded', function() {
+			// ...
+		});
 	</script>
 
 </head>
 
-<body class="demo-1">
+<body class="high-time">
 
-	<main>
+
+	<main id="content">
 		<div class="message">
-			
+
 			<a id="playButton" class="play-button" href="#">
-				Outaspace!
+				Play me
 			</a>
 		</div>
 		<div class="frame">

@@ -16,7 +16,41 @@ window.addEventListener('resize', onResize, false);
 let playButton = document.getElementById("playButton");
 playButton.addEventListener("click", handlePlayButton, false);
 
+let req = new XMLHttpRequest();
+req.open('GET', '../audio/outaspace.mp3', true);
+req.responseType = 'blob';
+req.onload = function() {
+    // Onload is triggered even on 404
+    // so we need to check the status code
+    if (this.status === 200) {
+       var audioBlob = this.response;
+       var audioUrl = URL.createObjectURL(audioBlob); // IE10+
+       // Video is now downloaded
+       // and we can set it as source on the video element
+       mediaElement = new Audio();
+       mediaElement.src = audioUrl;
+       listener = new THREE.AudioListener();
+        audio = new THREE.Audio(listener);
+        // mediaElement = new Audio('../audio/outaspace.mp3');
+        audio.setMediaElementSource(mediaElement);
+        actx = audio.context;
+        console.log(actx, mediaElement);
+
+        analyser = new THREE.AudioAnalyser(audio, fftSize);
+        mediaElement.loop = true;
+       console.log(`Loaded ${mediaElement} in ${audioUrl} from ${audioBlob}`);
+    }
+ }
+ req.onerror = function() {
+    // Error
+    console.log('Error.')
+ }
+ 
+ req.send();
+
 window.onload = function () {
+
+
     init();
     animate();
 }
@@ -52,15 +86,15 @@ function handlePlayButton() {
 
 function init() {
     
-    listener = new THREE.AudioListener();
-    audio = new THREE.Audio(listener);
-    mediaElement = new Audio('/puff-puff-pass/audio/outaspace.mp3');
-    audio.setMediaElementSource(mediaElement);
-    actx = audio.context;
-    console.log(actx, mediaElement);
+    // listener = new THREE.AudioListener();
+    // audio = new THREE.Audio(listener);
+    // // mediaElement = new Audio('../audio/outaspace.mp3');
+    // audio.setMediaElementSource(mediaElement);
+    // actx = audio.context;
+    // console.log(actx, mediaElement);
 
-    analyser = new THREE.AudioAnalyser(audio, fftSize);
-    mediaElement.loop = true;
+    // analyser = new THREE.AudioAnalyser(audio, fftSize);
+    // mediaElement.loop = true;
 
 
 

@@ -225,18 +225,8 @@ body {
 	overscroll-behavior: none;
 }
 
-.demo-2 {
-	font-family: Futura, "futura-pt", Arial, sans-serif;
-}
 
-.demo-2,
-.demo-3 {
-	--color-link: #fbc966;
-}
 
-.demo-4 {
-	--color-link: #52e093;
-}
 
 #gl {
 	width: 100vw;
@@ -248,10 +238,8 @@ body {
 
 #smoke {
 	position: absolute;
-
 	-webkit-clip-path: ellipse(24% 10% at 50% 55%);
 	clip-path: ellipse(24% 10% at 50% 55%);
-
 	filter: url(##gbFilter);
 	mask: url(./img/map.png);
 	mask-type: luminance;
@@ -313,7 +301,7 @@ a:focus {
 	position: fixed;
 	top: 0;
 	width: 100%;
-	z-index: 10000;
+	z-index: 9000;
 	text-align: center;
 }
 
@@ -478,3 +466,8 @@ a:focus {
 	overflow: hidden;
 	position: relative;
 }
+
+
+/* Paste this css to your style sheet file or under head tag */
+/* This only works with JavaScript, 
+if it's not present, don't show loader */
